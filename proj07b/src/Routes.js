@@ -2,6 +2,8 @@ import express from "express";
 import { content } from "./database/Content.js";
 import { Types, isValidObjectId } from "mongoose";
 import Joi from "joi";
+import crypto from "crypto-js"
+import { user } from "./database/User.js";
 
 const routes = express.Router();
 
@@ -52,7 +54,8 @@ routes.get("/content/:code", async (req, res) => {
     return res.status(400).json({ message: "Invalid Code!" });
   }
   try {
-    const result = await content.findById(Types.ObjectId(code));
+    console.log("Buscando ID:", code);
+    const result = await content.findById(code);
     if (result) {
       res.status(200).json(result);
     } else {
@@ -75,6 +78,32 @@ routes.post("/content", async (req, res) => {
     } else {
       res.status(500).json({ message: error.message });
     }
+  }
+});
+
+routes.post("/enter", async function (req, ans) {
+  const body = req.body;
+  const scheme = Joi.object({
+    email: Joi.string().email().max(128).required(),
+    password: Joi.string().required(),
+  });
+  try {
+    const validate = await scheme.validateAsync(body);
+    user.findOne({
+      email: validate.email,
+      password: crypto.SHA256(validate.password).toString()
+    })
+    .then(function(result){
+      if(result)
+        ans.sendStatus(202)
+      else
+        ans.sendStatus(401)
+    })
+    .catch(function(error){
+      ans.status(500).json({message:error.message})
+    })
+  } catch (error) {
+    ans.status(400).json({ message: error.message });
   }
 });
 

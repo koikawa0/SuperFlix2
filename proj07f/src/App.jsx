@@ -1,19 +1,18 @@
-import React from 'react'
-import {BrowserRouter, Routes, Route} from "react-router-dom"
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Hub from "./pages/Hub"
-import Explore from "./pages/Explore"
-import Video from "./pages/Video"
-import Panel from "./pages/Panel"
+import Panel from "./pages/Panel.jsx";
+import Explore from "./pages/Explore.jsx";
+import Hub from "./pages/Hub.jsx";
 
 export default function App() {
-  return <BrowserRouter>
-    <Routes>
-      <Route index path="/" element={<Hub/>}/>
-      <Route path="/explore" element={<Explore/>}/>
-      <Route path="/video/:code:" element={<Video/>}/>
-      <Route path="/panel" element={<Panel/>}/>
-      <Route path="*" element={<NotFound />}/>
-    </Routes>
-  </BrowserRouter>
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/panel" element={<Panel />} />
+        <Route path="/explore" element={<Explore />}></Route>
+        <Route path="/hub" element={<Hub/>}></Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }

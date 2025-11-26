@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-const scheme = new mongoose.Schema({
+const scheme = new mongoose.Schema(
+  {
     cover: String,
     track: String,
     title: String,
@@ -8,10 +9,12 @@ const scheme = new mongoose.Schema({
     genre: String,
     year: Number,
     duration: Number,
-    trackNumber: Number
-},
-{collection: "proj07"})
+    agegroup: Number,
+  },
+  { collection: "data" }
+);
 
-const content = mongoose.model("content", scheme)
+const content = mongoose.model("content", scheme);
+console.log({ content });
 
-export { content }
+export { content };
